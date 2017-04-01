@@ -1,0 +1,9 @@
+header {
+  background-color: #195cab;
+  margin: auto;
+  padding: 15px;
+}
+header img {
+  max-width: 200px;
+  max-height: 200px;
+}
