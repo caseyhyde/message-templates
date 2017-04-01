@@ -4,7 +4,8 @@
   "description": "Interview project, creating message templates.",
   "main": "app.js",
   "scripts": {
-    "test": "nodemone server/app.js"
+    "test": "nodemon server/app.js",
+    "start": "node server/app.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/caseyhyde/message-templates#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2"
   }
 }
