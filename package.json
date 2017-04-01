@@ -1,0 +1,22 @@
+{
+  "name": "interview-project",
+  "version": "1.0.0",
+  "description": "Interview project, creating message templates.",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemone server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caseyhyde/message-templates.git"
+  },
+  "author": "Casey Hyde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caseyhyde/message-templates/issues"
+  },
+  "homepage": "https://github.com/caseyhyde/message-templates#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
