@@ -1,4 +1,4 @@
-app.controller('CompaniesController', ['$location', '$http', function($location, $http) {
+app.controller('CompaniesController', ['$location', '$http', 'MessageFactory', function($location, $http, MessageFactory) {
   console.log("Companies Controller running");
 
   var self = this;
@@ -10,7 +10,6 @@ app.controller('CompaniesController', ['$location', '$http', function($location,
     url: '/companies'
   })
   .then(function(response) {
-    console.log(response);
     self.companies = response.data;
   });
 
