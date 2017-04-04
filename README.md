@@ -94,12 +94,37 @@ The application runs on a Node.js server, currently hosted on Heroku. It is a si
 
   4. There's a send button. It doesn't actually send anything, but you get the idea.
 
-
-
-
-
-
-
 # Classes and Time
 ---------
-Test
+### Classes
+I wanted to explore some of the new Object Oriented Programming constructs of ES6, and used the new Class features to build a lot of the functionality of this application. Some of this is a bit unnecessary, but I think it helps keep the code neat and organized. It also allows for further expansion, and should make writing tests much simpler. (I've already spent too much time on this application, unit tests just aren't happening, sorry folks).
+
+#### Examples:
+##### Guest and Company Class
+These were the most unnecessary, as the data was already coming from a JSON file, and already structured as Javascript Objects... The only way they modify the original objects is to pull the `timestampStart`, `timestampEnd`, and `roomNumber` properties out of the `guest.reservation` sub-object and add them as direct properties on the new objects created...
+  * *They could be of potential benefit, should the structure of the JSON files change. You would then have a class the could be modified to keep everything consistent.*
+
+### Time
+Time was the fun part of building this application. We are given a timezone with the company, but in a string format: `"US/Western"`. We do not know anything beyond this. I built two classes to address generating accurate local time, as well as accurate timezone Specific time. I also modified the Date prototype to include a method for determining if we were in Daylight Savings Time.
+
+#### It works like this:
+The `TimeService` houses all of these classes. Here, I modified the Date Prototype and added a `LocalTime` class and a `TimezoneSpecicTime` class.
+
+**Date.prototype.stdTimezoneOffset:**
+Checks the local timezone offset of January 1st and of July 1st (both of this year), and returns the greater of the two (ie: the greater value
+is the non DST timezone offset). These offsets are measured in minutes off UTC. A value of 300 would represent a UTC offset of -5 hours.
+
+**Date.prototype.dst:**
+A method that compares the current timezone offset to the value in Date.prototype.stdTimezoneOffset. If the current offset is less than the stdTimezoneOffset, it returns true, as we are in DST and false when not. (US/Central is UTC-6 not in DST and UTC-5 when in DST).
+
+**LocalTime:** This class creates an object with the current date, time and offset from UTC. It also adds some potentially helpful properties such as the local hour (0 - 23), timestamp in ms from Jan, 1 1970, offset in ms, and whether or not we are currently in dst (using the new properties added to the Date prototype).
+
+**TimezoneSpecicTime:**
+
+This is where the real magic happens. We send this class today's current date/time, and the timezone we want the time in. The class first extends on the LocalTime class, so creating a TimezoneSpecicTime object will include all of the properties of a LocalTime object.
+
+I created a nonDstTimeZones object that holds the UTC offsets for all US timezones (in hours). The TimezoneSpecicTime class references this object to get the offset in hours from a string passed in (ie: send the class "US/Central" and TimezoneSpecificTime.offsetHours becomes -6).
+
+We then determine the time in this timezone by adding the offset in ms to the localtime timestamp, and generate a new date based on this adjusted timestamp. We can then check to see if this time is in dst, and using the `getTimeOfDay()` method, can determine if it is morning, afternoon, or evening.
+
+I spent a fair amount of time attempting to correct for the edge cases where, daylight savings time just started in your local timezone, but hasn't yet in the timezone you are referencing (or vice versa). The logic says: "change your local time to that timezone's time and check if you're in dst and if it's morning, afternoon, or evening." Listening to Pink Floyd's Time makes all of this work much better I've discovered.
