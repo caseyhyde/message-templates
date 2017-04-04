@@ -1,10 +1,14 @@
-app.factory('MessageFactory', function() {
+app.factory('MessageFactory', ['TimeService', function(TimeService) {
+  var messageData = {};
+
   class Guest {
     constructor(guest) {
       this.id = guest.id;
       this.firstName = guest.firstName;
       this.lastName = guest.lastName;
-      this.roomNumber = guest.roomNumber;
+      this.roomNumber = guest.reservation.roomNumber;
+      this.startTimestamp = guest.reservation.startTimestamp;
+      this.endTimestamp = guest.reservation.endTimestamp;
     }
   };
   class Company {
@@ -15,87 +19,27 @@ app.factory('MessageFactory', function() {
       this.timezone = company.timezone;
     }
   };
-  /****************
-     TIME STUFF
-  *****************/
-  const nonDstTimeZones = {
-    Eastern: -5,
-    Central: -6,
-    Mountain: -7,
-    Western: -8,
-    Alaskan: -9,
-    Hawaiian: -10,
-  }
-  /*******************
-      CHECK FOR DST
-  ********************/
-  Date.prototype.stdTimezoneOffset = function() {
-    var jan = new Date(this.getFullYear(), 0, 1);
-    var jul = new Date(this.getFullYear(), 6, 1);
-    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-    //Timezone offsets returned from getTimezoneOffeset are inverse of UTC - values...
-    //Ie: getTimezoneOffset() that returns 300 == UTC-5
-    //Ie: getTimezoneOffset() that returns 360 == UTC-6
-  }
-  Date.prototype.dst = function() {
-    return this.getTimezoneOffset() < this.stdTimezoneOffset();
-    //If stdTimezoneOffset is greater, we're in DST!
-  }
-  class LocalTime {
-    constructor(date) {
-      this.localDate = date;
-      this.localHour = date.getHours();
-      this.localTimeMs = date.getTime();
-      this.localOffsetHours = date.getTimezoneOffset() / -60;
-      this.localOffsetMs = this.localOffsetHours * 3600000;
-      this.localDst = date.dst();
+  class Message {
+    constructor(company, guest, time) {
+      this.company = company;
+      this.guest = guest;
+      this.time = time;
     }
-  }
-  class TimezoneSpecicTime extends LocalTime{
-    constructor(date, timezone) {
-      super(date);
-      this.timezoneRegion = timezone.split('/')[1];//Giving us everything after / Ie: region.
-      this.timezoneOffsetHours = nonDstTimeZones[this.timezoneRegion];
-      this.timezoneOffsetMs = this.timezoneOffsetHours * 3600000;
-      this.timezoneOffsetFromLocalHours = this.timezoneOffsetHours - this.localOffsetHours;
-      this.timezoneOffsetFromLocalMs = this.timezoneOffsetFromLocalHours * 3600000;
-      this.timezoneTime = this.localTimeMs + this.timezoneOffsetFromLocalMs;
-      this.timezoneDate = new Date(this.timezoneTime);
-      //If we're in dst in this timezone, change these things:
-      if(this.timezoneDate.dst()) {
-        this.timezoneDst = true;
-        this.timezoneOffsetHours += 1;
-        this.timezoneOffsetFromLocalHours = this.timezoneOffsetHours - this.localOffsetHours;
-        this.timezoneOffsetFromLocalMs = this.timezoneOffsetFromLocalHours * 3600000;
-        this.timezoneTime += 3600000;
-        this.timezoneDate = new Date(this.timezoneTime);
-        this.timezoneHour = this.timezoneDate.getHours();
-      } else {
-        this.timezoneDst = false;
-        this.timezoneHour = this.timezoneDate.getHours();
-      }
-    }
-    getTimeOfDay() {
-      switch (true) {
-        case (this.timezoneHour < 12):
-          return "morning";
-          break;
-        case (this.timezoneHour >= 12 && this.timezoneHour < 18):
-          return "afternoon";
-          break;
-        case (this.timezoneHour >= 18 && this.timezoneHour <= 23):
-          return "evening";
-          break;
-      }
-    }
-  }
-
-  var testTime = new TimezoneSpecicTime(new Date, "US/Eastern");
-  console.log(testTime);
-  console.log(testTime.getTimeOfDay());
-
-  const publicApi = {
-
   };
-  return publicApi;
-});//End factory
+  function setCompany(company) {
+    messageData.company = new Company(company);
+  }
+  function setGuest(guest) {
+    messageData.guest = new Guest(guest);
+  }
+  function setTime(date, timezone) {
+    messageData.time = TimeService.createTimeObject(date, timezone);
+  }
+  const messageApi = {
+    setCompany: setCompany,
+    setGuest: setGuest,
+    setTime: setTime,
+    messageData: messageData
+  };
+  return messageApi;
+}]);//End factory

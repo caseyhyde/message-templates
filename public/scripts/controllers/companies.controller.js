@@ -2,19 +2,20 @@ app.controller('CompaniesController', ['$location', '$http', 'MessageFactory', f
   console.log("Companies Controller running");
 
   var self = this;
-
   self.companies;
 
   $http({
     method: 'GET',
     url: '/companies'
   })
-  .then(function(response) {
+  .then((response) => {
     self.companies = response.data;
   });
 
-  self.selectCompany = function(company) {
+  self.selectCompany = (company) => {
     console.log("You selected: ", company);
+    MessageFactory.setCompany(company);
+    $location.path('/guests');
   }
 
 }]);//End controller

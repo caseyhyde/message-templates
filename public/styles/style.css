@@ -17,3 +17,6 @@ footer {
 main {
   margin: 10px;
 }
+.md-button.md-raised {
+  background-color: #195cab !important;
+}
