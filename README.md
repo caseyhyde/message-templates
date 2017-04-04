@@ -102,7 +102,6 @@ I wanted to explore some of the new Object Oriented Programming constructs of ES
 #### Examples:
 ##### Guest and Company Class
 These were the most unnecessary, as the data was already coming from a JSON file, and already structured as Javascript Objects... The only way they modify the original objects is to pull the `timestampStart`, `timestampEnd`, and `roomNumber` properties out of the `guest.reservation` sub-object and add them as direct properties on the new objects created...
-  * *They could be of potential benefit, should the structure of the JSON files change. You would then have a class the could be modified to keep everything consistent.*
 
 ### Time
 Time was the fun part of building this application. We are given a timezone with the company, but in a string format: `"US/Western"`. We do not know anything beyond this. I built two classes to address generating accurate local time, as well as accurate timezone Specific time. I also modified the Date prototype to include a method for determining if we were in Daylight Savings Time.
@@ -128,3 +127,18 @@ I created a nonDstTimeZones object that holds the UTC offsets for all US timezon
 We then determine the time in this timezone by adding the offset in ms to the localtime timestamp, and generate a new date based on this adjusted timestamp. We can then check to see if this time is in dst, and using the `getTimeOfDay()` method, can determine if it is morning, afternoon, or evening.
 
 I spent a fair amount of time attempting to correct for the edge cases where, daylight savings time just started in your local timezone, but hasn't yet in the timezone you are referencing (or vice versa). The logic says: "change your local time to that timezone's time and check if you're in dst and if it's morning, afternoon, or evening." Listening to Pink Floyd's Time makes all of this work much better I've discovered.
+
+## Decisions Made:
+------------------
+* I used the MEAN stack, because I like it :). I think the OOP concepts made it easier to structure this code, and it was a breeze to spin up a server in Node.js to handle this application. Importing JSON files was also as simple as
+```Javascript
+var guest = require('<path-to-guest.json>');
+```
+* I used Angular Material for layout and styling, because it creates a consistent look across all views, and provides UX concepts familiar to almost all users.
+* I think I've pretty well covered my decision to use the new class features in ES6 over a the old constructor functions (it was also fun). This whole application is about building objects. I couldn't have done it without you OOP...
+* With regards to verifying correctness: Jasmine WOULD have been the way to go here... The extent of the testing I did involved creating test Time Objects and logging them out, using different dates and timezones. If you send in March 12th, 2017 2:01 am (when DST started in US/Central) and the timezone US/Western, you will receive a time object that is CORRECTLY not in DST yet...
+
+## What if I had MORE time?
+---------------------------
+1. It would be fairly simply to add to the `nonDstTimeZones` object the rest of the timezones in the world... This would be my first step.
+2. The whole thing breaks in Arizona... Or rather, any place that never observes DST... This would be second. The issue isn't in checking Arizona time zones, it's in running this code in Arizona... It compares the timezoneTime to the local time, and if the local time is never adjusted for DST, it would never adjust the timezone specific time either, so when DST was in effect in the rest of the world, you can't run this application accurately in Arizona. But, I digress... I'm told it's really hot there any way. 
