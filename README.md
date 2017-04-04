@@ -92,7 +92,7 @@ The application runs on a Node.js server, currently hosted on Heroku. It is a si
   3. Opens an `mdDialog`, which contains the formatted message to send to the guest.
   > Good afternoon Candy, and welcome to Hotel California! Your room, 529 is ready for you now! Please enjoy your stay, and let us know if you need anything!
 
-      * There's a send button. It doesn't actually send anything, but you get the idea...
+    * There's a send button. It doesn't actually send anything, but you get the idea.
 
 
 
