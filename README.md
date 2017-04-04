@@ -1,23 +1,24 @@
 # Welcome to the Message Generator!
+-----------------------------------
 
 ##### View the project live [here](https://immense-cove-15914.herokuapp.com/#/companies)
 
-### To install and run locally:
+## To install and run locally:
 -------------------------------
 1. `git clone https://github.com/caseyhyde/message-templates.git`
 2. `npm install`
 3. `npm start`
 4. Point your browser to [localhost:3000](http://localhost:3000)
 
-### What it does
+## What it does
 -----------------
 The concept of this application was simple: generate a custom message based on data pulled from a customer.json and company.json file.
 
 #### The message generated should be:
-1. unique to that customer and the company they are staying at.
+1. Unique to that customer and the company they are staying at.
 2. Include a greeting based on the time of day where they are located.
 
-These two JSON files contain objects structured as so:
+#### The two JSON files contain objects structured as so:
 
 #### companies.json
 ```json
@@ -62,6 +63,9 @@ These two JSON files contain objects structured as so:
   }
 ]
 ```
-### The message generated should be something to the effect of:
-
+## The message generated should be something to the effect of:
+--------------------------------------------------------------
 > Good morning Candy! Welcome to the Hotel California! The room you reserved, 529, is currently ready for you. If you have any questions or comments regarding your stay, please reach out to us! You're awesome!
+
+## How it works
+----------------
