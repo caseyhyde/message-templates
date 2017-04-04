@@ -74,7 +74,7 @@ app.service('TimeService', function() {
     }
   }
 
-  this.createTimeObject = function(date, timezone) {
+  this.createTimeObject = (date, timezone) => {
     return new TimezoneSpecicTime(date, timezone);
   }
 
