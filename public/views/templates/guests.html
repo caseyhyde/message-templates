@@ -1,9 +1,10 @@
 <h1>Please select the guest you wish to message</h1>
-<form>
+<form id="guestForm">
   <label for="guestSelect">Guest Name:</label>
   <select id="guestSelect" required="required" ng-model="selectedGuest" ng-options="guest as guest.firstName + ' ' + guest.lastName for guest in guest.guests">
     <option style="display:none" value="">select a guest</option>
   </select>
+  <br>
   <md-button class="md-raised md-primary" ng-click="guest.generateMessage(selectedGuest)">
     <span>Generate Message<span>
   </md-button>

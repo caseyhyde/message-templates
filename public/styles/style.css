@@ -1,4 +1,8 @@
+body {
+  text-align: center;
+}
 header {
+  text-align: left;
   background-color: #195cab;
   margin: 10px;
   padding: 15px;
@@ -8,15 +12,17 @@ header img {
   max-width: 200px;
   max-height: 200px;
 }
+main {
+  margin: 10% 20%;
+}
 footer {
   width: 100%;
-  text-align: center;
-  position: absolute;
-  bottom: 10px;
-}
-main {
-  margin: 10px;
+  position: static;
+  bottom: 0px;
 }
 .md-button.md-raised {
   background-color: #195cab !important;
+}
+#welcome {
+  font-size: 50px;
 }
