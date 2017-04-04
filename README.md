@@ -67,5 +67,23 @@ The concept of this application was simple: generate a custom message based on d
 --------------------------------------------------------------
 > Good morning Candy! Welcome to the Hotel California! The room you reserved, 529, is currently ready for you. If you have any questions or comments regarding your stay, please reach out to us! You're awesome!
 
-## How it works
+# How it works
 ----------------
+The application runs on a Node.js server, currently hosted on Heroku. It is a single-page AngularJS application. The server pulls in the two required JSON files, and sends them to the client. This happens over these steps:
+1. On the home view (or Companies view), the `CompaniesController` makes a request to the `/companies` route on the server, which responds with the array of companies objects in `companies.json`.
+  * Angular then `ngRepeat`s over the companies returned, creating a button for each.
+2. When the user clicks on a company, the ` CompaniesController` updates the `MessageFactory` with the selected company object, via the `setCompany` method exposed on the `messageApi` returned from that factory.
+  * The client route is then changed to `/guests`, loading the `GuestsController` and `guests.html` template.
+3. On load, the `GuestsController` makes a request to the `/guests` route on the server, which responds with the array of guest objects in `guests.json`
+  * Angular then displays all of these guest's first and last names in a `select` element using `ngOptions`.
+  * There is a service: `TimeService`, that contains classes for creating Time Objects. After loading all of the guests, `startTime()` is called in the `GuestController`, which:
+    1. Creates a new Time Object.
+    2. Starts the `tick()` interval, which updates the current time every second.  
+      * *More on classes and the `TimeService` can be found [here](#time)*
+4. The user then selects a guest from the drop down list. There is a card, hidden below with an `ngIf` which displays once a guest has been selected.
+  * This card shows all of the information that will be used to generate the message:
+    > Candy Pace is staying in room 529, at Hotel California in Santa Barbara, where it is currently Apr 4, 2017 1:16:33 PM (Daylight Savings Time is in effect)
+
+# Time
+---------
+Test
