@@ -86,13 +86,13 @@ The application runs on a Node.js server, currently hosted on Heroku. It is a si
     > Candy Pace is staying in room 529, at Hotel California in Santa Barbara, where it is currently Apr 4, 2017 1:16:33 PM (Daylight Savings Time is in effect).  
 
 5. The user then clicks the "Generate Message", which runs the `generateMessage()` function in the `GuestController`, doing a few things:
-    1. Updates the `MessageFactory`'s messageData object with the selected guest via the `setGuest()` method.
-      * `setGuest()` creates a new Guest Object via the Guest class.
-    2. Runs the `setTime()` method in the `MessageFactory`, generating a new `TimezoneSpecicTime` object, which has all of the time information we need to accurately determine the appropriate time of day for the guest ("morning", "afternoon", "evening"). We store this in the `messageData` object as well.
-    3. Opens an `mdDialog`, which contains the formatted message to send to the guest.
+  1. Updates the `MessageFactory`'s messageData object with the selected guest via the `setGuest()` method.
+    * `setGuest()` creates a new Guest Object via the Guest class.
+  2. Runs the `setTime()` method in the `MessageFactory`, generating a new `TimezoneSpecicTime` object, which has all of the time information we need to accurately determine the appropriate time of day for the guest ("morning", "afternoon", "evening"). We store this in the `messageData` object as well.
+  3. Opens an `mdDialog`, which contains the formatted message to send to the guest.
   > Good afternoon Candy, and welcome to Hotel California! Your room, 529 is ready for you now! Please enjoy your stay, and let us know if you need anything!
 
-    4. There's a send button. It doesn't actually send anything, but you get the idea.
+  4. There's a send button. It doesn't actually send anything, but you get the idea.
 
 # Classes and Time
 ---------
